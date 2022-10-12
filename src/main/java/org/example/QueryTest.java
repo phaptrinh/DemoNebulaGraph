@@ -16,24 +16,14 @@ public class QueryTest {
     public static void main(String[] args) throws IOErrorException, AuthFailedException, ClientServerIncompatibleException, NotValidConnectionException, UnknownHostException, UnsupportedEncodingException {
 
         NebulaClient nebulaClient = NebulaHelper.getNebulaClient(Config.NEBULA_HOST, Config.NEBULA_PORT);
-        NebulaClient nebulaClient2 = NebulaHelper.getNebulaClient(Config.NEBULA_HOST, Config.NEBULA_PORT);
 
-        NebulaClient nebulaClient3 = NebulaHelper.getNebulaSingletonClient(Config.NEBULA_HOST, Config.NEBULA_PORT);
-        NebulaClient nebulaClient4 = NebulaHelper.getNebulaSingletonClient(Config.NEBULA_HOST, Config.NEBULA_PORT);
+        Session session = nebulaClient.getSession(Config.USERNAME, Config.PASSWORD, Config.RECONNECT);
+        String query = "USE basketballplayer;" + "FETCH PROP ON player \"player100\" YIELD properties(vertex);";
+        ResultSet resultSet = session.execute(query);
 
-//        System.out.println(nebulaClient == nebulaClient2);
-//        System.out.println(nebulaClient3 == nebulaClient4);
-
-
-        Session session = nebulaClient3.getSession(Config.USERNAME, Config.PASSWORD, Config.RECONNECT);
-        Session session2 = nebulaClient4.getSession(Config.USERNAME, Config.PASSWORD, Config.RECONNECT);
-
-        ResultSet resultSet = session.execute("SHOW HOSTS;");
         printResult(resultSet);
         session.release();
-        session2.release();
-        nebulaClient3.close();
-        nebulaClient4.close();
+        nebulaClient.close();
 
 
     }
