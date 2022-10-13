@@ -19,6 +19,7 @@ public class QueryTest {
 
         Session session = nebulaClient.getSession(Config.USERNAME, Config.PASSWORD, Config.RECONNECT);
         String query = "USE basketballplayer;" + "FETCH PROP ON player \"player100\" YIELD properties(vertex);";
+        String query2 = "show hosts;";
         ResultSet resultSet = session.execute(query);
 
         printResult(resultSet);
